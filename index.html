@@ -131,11 +131,25 @@ public class TesteIO {
                             <p class="text-sm text-slate-600 mb-4">Executa um número predefinido de vezes.</p>
                             <div class="code-block mb-4">
 <pre>for (int i = 1; i <= 5; i++) {
-  // Imprime o número
+  System.out.println("Número: " + i);
 }</pre>
                             </div>
                             <button id="for-start" class="w-full bg-blue-700 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-800 transition-colors">Iniciar Animação</button>
                             <div id="for-output" class="mt-4 p-4 bg-gray-800 text-white rounded-md font-mono text-sm min-h-[80px]"></div>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-lg border">
+                            <h3 class="font-semibold text-lg mb-2">Laço `while`</h3>
+                            <p class="text-sm text-slate-600 mb-4">Executa enquanto uma condição for verdadeira. Pode não executar nenhuma vez.</p>
+                            <div class="code-block mb-4">
+<pre>int contador = 0;
+while (contador < 3) {
+  System.out.println("Contador: " + contador);
+  contador++;
+}</pre>
+                            </div>
+                            <button id="while-start" class="w-full bg-blue-700 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-800 transition-colors">Iniciar Animação</button>
+                            <div id="while-output" class="mt-4 p-4 bg-gray-800 text-white rounded-md font-mono text-sm min-h-[80px]"></div>
                         </div>
 
                         <div class="bg-slate-50 p-4 rounded-lg border">
@@ -144,8 +158,8 @@ public class TesteIO {
                             <div class="code-block mb-4">
 <pre>char op;
 do {
-  // Mostra menu...
-  op = //... lê a opção
+  System.out.println("Menu...");
+  op = 'S'; // Simulação de leitura
 } while (op != 'S');</pre>
                             </div>
                             <button id="dowhile-start" class="w-full bg-blue-700 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-800 transition-colors">Iniciar Animação</button>
@@ -339,6 +353,20 @@ System.out.println("Menor valor: " + minValor);</pre>
                 await sleep(500);
             }
             output.innerHTML += '> Fim do laço for.';
+            e.target.disabled = false;
+        });
+
+        document.getElementById('while-start').addEventListener('click', async (e) => {
+            const output = document.getElementById('while-output');
+            output.innerHTML = '';
+            e.target.disabled = true;
+            let contador = 0;
+            while (contador < 3) {
+                output.innerHTML += `> Contador: ${contador}\n`;
+                contador++;
+                await sleep(800);
+            }
+            output.innerHTML += '> Fim do laço while.';
             e.target.disabled = false;
         });
         
