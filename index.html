@@ -173,11 +173,62 @@ do {
                         <canvas id="arrayChart"></canvas>
                     </div>
 
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                        <button id="array-traverse" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">Percorrer</button>
-                        <button id="array-even-odd" class="bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition-colors">Pares / Ímpares</button>
-                        <button id="array-max" class="bg-purple-600 text-white font-bold py-2 px-4 rounded-md hover:bg-purple-700 transition-colors">Achar Maior</button>
-                        <button id="array-min" class="bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600 transition-colors">Achar Menor</button>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2 text-blue-700">Percorrer o Vetor</h3>
+                            <button id="array-traverse" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors mb-4">Percorrer</button>
+                            <div class="code-block mb-4">
+<pre>int[] numeros = {12, 5, 89, 3, 45, 7, 99};
+for (int i = 0; i < numeros.length; i++) {
+    System.out.println("Elemento no índice " + i + ": " + numeros[i]);
+}</pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2 text-green-700">Pares / Ímpares</h3>
+                            <button id="array-even-odd" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition-colors mb-4">Pares / Ímpares</button>
+                            <div class="code-block mb-4">
+<pre>int[] numeros = {12, 5, 89, 3, 45, 7, 99};
+for (int num : numeros) {
+    if (num % 2 == 0) {
+        System.out.println(num + " é PAR.");
+    } else {
+        System.out.println(num + " é ÍMPAR.");
+    }
+}</pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2 text-purple-700">Achar Maior Valor</h3>
+                            <button id="array-max" class="w-full bg-purple-600 text-white font-bold py-2 px-4 rounded-md hover:bg-purple-700 transition-colors mb-4">Achar Maior</button>
+                            <div class="code-block mb-4">
+<pre>int[] numeros = {12, 5, 89, 3, 45, 7, 99};
+int maxValor = numeros[0];
+for (int i = 1; i < numeros.length; i++) {
+    if (numeros[i] > maxValor) {
+        maxValor = numeros[i];
+    }
+}
+System.out.println("Maior valor: " + maxValor);</pre>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-lg mb-2 text-orange-700">Achar Menor Valor</h3>
+                            <button id="array-min" class="w-full bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600 transition-colors mb-4">Achar Menor</button>
+                            <div class="code-block mb-4">
+<pre>int[] numeros = {12, 5, 89, 3, 45, 7, 99};
+int minValor = numeros[0];
+for (int i = 1; i < numeros.length; i++) {
+    if (numeros[i] < minValor) {
+        minValor = numeros[i];
+    }
+}
+System.out.println("Menor valor: " + minValor);</pre>
+                            </div>
+                        </div>
                     </div>
 
                     <div id="array-output" class="mt-6 p-4 bg-gray-800 text-white rounded-md font-mono text-sm min-h-[100px]">
