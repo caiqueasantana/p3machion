@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Interativo para Prova de Java</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A single-page application with a tab-based navigation system. The structure is designed for quick, non-linear access to study topics (I/O, if-else, Loops, Arrays), which is ideal for a student reviewing for an exam. Each tab reveals a dedicated content section with interactive elements (live code simulators, visualizers, animations) to make abstract concepts tangible. This task-oriented design (e.g., "I need to review loops") is more efficient for studying than a linear document, as it allows the user to jump directly to the required information and engage with it actively. -->
+    <!-- Visualization & Content Choices: The application transforms the static Java guide into an interactive experience. Goal: Inform/Demonstrate -> I/O is shown via an interactive console simulator (HTML/JS). Goal: Compare/Visualize Logic -> if-else uses a slider to dynamically highlight executed code blocks (JS). Goal: Visualize Iteration -> Loops are animated using dynamically updated text and visual counters (JS). Goal: Demonstrate Array Operations -> Arrays are visualized as interactive blocks; operations like finding min/max or evens/odds are animated step-by-step (JS). A bar chart (Chart.js) provides a visual representation of array data for enhanced clarity. These choices prioritize active learning and concept visualization over passive reading. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { border-color: #1e40af; color: #1e40af; background-color: #dbeafe; }
+        .tab-inactive { border-color: transparent; color: #4b5563; }
+        .content-section { display: none; }
+        .content-active { display: block; }
+        .code-block { background-color: #1e293b; color: #e2e8f0; font-family: 'Courier New', Courier, monospace; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; white-space: pre-wrap; }
+        .highlight-code { background-color: #4f46e5; color: white; border-radius: 4px; padding: 2px 4px; transition: all 0.3s ease; }
+        .array-box { transition: all 0.3s ease-in-out; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-900">Guia Interativo para Prova de Java</h1>
+            <p class="mt-2 text-slate-600 max-w-3xl mx-auto">Uma ferramenta de estudo para visualizar e praticar os conceitos fundamentais de Java antes da sua avaliação.</p>
+        </header>
+
+        <nav class="flex flex-wrap justify-center border-b-2 border-slate-200 mb-8">
+            <button class="tab-btn py-3 px-4 md:px-6 font-semibold border-b-4 text-sm md:text-base tab-active" onclick="showTab('io')">Entrada e Saída</button>
+            <button class="tab-btn py-3 px-4 md:px-6 font-semibold border-b-4 text-sm md:text-base tab-inactive" onclick="showTab('decision')">Decisão (if-else)</button>
+            <button class="tab-btn py-3 px-4 md:px-6 font-semibold border-b-4 text-sm md:text-base tab-inactive" onclick="showTab('loops')">Laços de Repetição</button>
+            <button class="tab-btn py-3 px-4 md:px-6 font-semibold border-b-4 text-sm md:text-base tab-inactive" onclick="showTab('arrays')">Vetores (Arrays)</button>
+        </nav>
+
+        <main id="main-content">
+
+            <!-- Seção de Entrada e Saída -->
+            <section id="io" class="content-section content-active">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">Fundamentos: Entrada, Processamento e Saída</h2>
+                    <p class="mb-6 text-slate-600">Esta seção demonstra o fluxo básico de um programa Java: ler dados do usuário usando a classe `Scanner`, realizar um processamento simples e exibir o resultado. Interaja com o exemplo abaixo para ver o código em ação.</p>
+                    <div class="grid md:grid-cols-2 gap-6 items-start">
+                        <div class="code-block">
+<pre>import java.util.Scanner;
+
+public class TesteIO {
+  public static void main(String[] args) {
+    Scanner entrada = new Scanner(System.in);
+    
+    System.out.print("Digite seu nome: ");
+    String nome = entrada.nextLine();
+    
+    System.out.print("Digite sua idade: ");
+    int idade = entrada.nextInt();
+    
+    int anoNascimento = 2024 - idade;
+    
+    System.out.println(
+      "\nOlá, " + nome + "! " +
+      "Você tem " + idade + " anos e " +
+      "nasceu em " + anoNascimento + "."
+    );
+    
+    entrada.close();
+  }
+}</pre>
+                        </div>
+                        <div class="bg-slate-100 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Simulador Interativo</h3>
+                            <div class="mb-2">
+                                <label for="io-nome" class="block text-sm font-medium text-slate-700">Seu nome:</label>
+                                <input type="text" id="io-nome" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Ex: Ana">
+                            </div>
+                            <div class="mb-4">
+                                <label for="io-idade" class="block text-sm font-medium text-slate-700">Sua idade:</label>
+                                <input type="number" id="io-idade" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Ex: 25">
+                            </div>
+                            <button id="io-run" class="w-full bg-blue-700 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-800 transition-colors">Executar</button>
+                            <div id="io-output" class="mt-4 p-4 bg-gray-800 text-white rounded-md font-mono text-sm min-h-[80px]"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Decisão -->
+            <section id="decision" class="content-section">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">Estruturas de Decisão: if-else</h2>
+                    <p class="mb-6 text-slate-600">As estruturas `if-else` permitem que o programa execute diferentes blocos de código com base em condições. Use o controle deslizante para alterar o valor da variável `pontuacao` e observe como o fluxo de execução muda, destacando o caminho lógico tomado pelo código.</p>
+                     <div class="grid md:grid-cols-2 gap-6 items-start">
+                        <div class="code-block" id="decision-code">
+<pre>int pontuacao = <span id="pontuacao-val" class="text-amber-300">75</span>;
+
+<span id="if-block">if (pontuacao >= 90) {
+    System.out.println("Nota: A");
+}</span> <span id="elseif-block">else if (pontuacao >= 75) {
+    System.out.println("Nota: B");
+}</span> <span id="else-block">else {
+    System.out.println("Nota: F");
+}</span></pre>
+                        </div>
+                        <div class="bg-slate-100 p-4 rounded-lg">
+                            <h3 class="font-semibold mb-2">Controle Interativo</h3>
+                            <label for="pontuacao-slider" class="block text-sm font-medium text-slate-700">Ajuste a Pontuação: <span id="slider-value" class="font-bold text-blue-700">75</span></label>
+                            <input type="range" id="pontuacao-slider" min="0" max="100" value="75" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer mt-2">
+                            <div id="decision-output" class="mt-4 p-4 bg-gray-800 text-white rounded-md font-mono text-sm">
+                                Saída: Nota: B
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Laços -->
+            <section id="loops" class="content-section">
+                 <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">Laços de Repetição: for, while, do-while</h2>
+                    <p class="mb-6 text-slate-600">Laços executam um bloco de código repetidamente. Explore os exemplos abaixo. O laço `for` é ideal para quando o número de iterações é conhecido. O `do-while` é útil para menus, pois sempre executa ao menos uma vez. Clique em "Iniciar Animação" para ver a contagem passo a passo.</p>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        
+                        <div class="bg-slate-50 p-4 rounded-lg border">
+                            <h3 class="font-semibold text-lg mb-2">Laço `for`</h3>
+                            <p class="text-sm text-slate-600 mb-4">Executa um número predefinido de vezes.</p>
+                            <div class="code-block mb-4">
+<pre>for (int i = 1; i <= 5; i++) {
+  // Imprime o número
+}</pre>
+                            </div>
+                            <button id="for-start" class="w-full bg-blue-700 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-800 transition-colors">Iniciar Animação</button>
+                            <div id="for-output" class="mt-4 p-4 bg-gray-800 text-white rounded-md font-mono text-sm min-h-[80px]"></div>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-lg border">
+                            <h3 class="font-semibold text-lg mb-2">Laço `do-while`</h3>
+                            <p class="text-sm text-slate-600 mb-4">Executa pelo menos uma vez, depois checa a condição.</p>
+                            <div class="code-block mb-4">
+<pre>char op;
+do {
+  // Mostra menu...
+  op = //... lê a opção
+} while (op != 'S');</pre>
+                            </div>
+                            <button id="dowhile-start" class="w-full bg-blue-700 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-800 transition-colors">Iniciar Animação</button>
+                             <div id="dowhile-output" class="mt-4 p-4 bg-gray-800 text-white rounded-md font-mono text-sm min-h-[80px]"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Vetores -->
+            <section id="arrays" class="content-section">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-4">Vetores (Arrays)</h2>
+                    <p class="mb-6 text-slate-600">Vetores armazenam coleções de valores do mesmo tipo. Use os botões para executar operações comuns em um vetor de exemplo. Observe como o código percorre e analisa os elementos visualmente no diagrama e no gráfico.</p>
+                    
+                    <div class="mb-6 text-center">
+                         <p class="font-mono text-slate-700">Vetor de Exemplo: <span id="array-visual-text">{12, 5, 89, 3, 45, 7, 99}</span></p>
+                    </div>
+
+                    <div class="flex justify-center items-center space-x-2 md:space-x-4 p-4 bg-slate-100 rounded-lg mb-6" id="array-visual-container">
+                    </div>
+
+                    <div class="mb-6 chart-container">
+                        <canvas id="arrayChart"></canvas>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <button id="array-traverse" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors">Percorrer</button>
+                        <button id="array-even-odd" class="bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 transition-colors">Pares / Ímpares</button>
+                        <button id="array-max" class="bg-purple-600 text-white font-bold py-2 px-4 rounded-md hover:bg-purple-700 transition-colors">Achar Maior</button>
+                        <button id="array-min" class="bg-orange-500 text-white font-bold py-2 px-4 rounded-md hover:bg-orange-600 transition-colors">Achar Menor</button>
+                    </div>
+
+                    <div id="array-output" class="mt-6 p-4 bg-gray-800 text-white rounded-md font-mono text-sm min-h-[100px]">
+                        Pressione um botão para iniciar uma operação no vetor.
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contentSections = document.querySelectorAll('.content-section');
+        let currentAnimation = null;
+
+        function showTab(tabId) {
+            if (currentAnimation) {
+                clearTimeout(currentAnimation);
+                currentAnimation = null;
+            }
+
+            tabs.forEach(tab => {
+                tab.classList.remove('tab-active');
+                tab.classList.add('tab-inactive');
+            });
+            event.target.classList.add('tab-active');
+            event.target.classList.remove('tab-inactive');
+
+            contentSections.forEach(section => {
+                section.classList.remove('content-active');
+            });
+            document.getElementById(tabId).classList.add('content-active');
+            
+            if (tabId === 'arrays') {
+                initArrayVisuals();
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // --- Lógica da Seção de I/O ---
+        document.getElementById('io-run').addEventListener('click', () => {
+            const nome = document.getElementById('io-nome').value || "visitante";
+            const idade = parseInt(document.getElementById('io-idade').value) || 0;
+            const outputDiv = document.getElementById('io-output');
+            
+            outputDiv.innerHTML = '';
+            
+            if (idade <= 0 || !nome) {
+                 outputDiv.innerHTML = '> Por favor, insira um nome e uma idade válida.';
+                 return;
+            }
+            
+            const anoNascimento = new Date().getFullYear() - idade;
+            
+            let outputText = `> Digite seu nome: ${nome}\n> Digite sua idade: ${idade}\n\n> Olá, ${nome}! Você tem ${idade} anos e nasceu em ${anoNascimento}.`;
+            
+            let i = 0;
+            function typeWriter() {
+                if (i < outputText.length) {
+                    outputDiv.innerHTML += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 20);
+                }
+            }
+            typeWriter();
+        });
+
+        // --- Lógica da Seção de Decisão ---
+        const slider = document.getElementById('pontuacao-slider');
+        const pontuacaoVal = document.getElementById('pontuacao-val');
+        const sliderValue = document.getElementById('slider-value');
+        const ifBlock = document.getElementById('if-block');
+        const elseifBlock = document.getElementById('elseif-block');
+        const elseBlock = document.getElementById('else-block');
+        const decisionOutput = document.getElementById('decision-output');
+
+        slider.addEventListener('input', (event) => {
+            const value = parseInt(event.target.value);
+            pontuacaoVal.textContent = value;
+            sliderValue.textContent = value;
+
+            ifBlock.classList.remove('highlight-code');
+            elseifBlock.classList.remove('highlight-code');
+            elseBlock.classList.remove('highlight-code');
+
+            if (value >= 90) {
+                ifBlock.classList.add('highlight-code');
+                decisionOutput.textContent = 'Saída: Nota: A';
+            } else if (value >= 75) {
+                elseifBlock.classList.add('highlight-code');
+                decisionOutput.textContent = 'Saída: Nota: B';
+            } else {
+                elseBlock.classList.add('highlight-code');
+                decisionOutput.textContent = 'Saída: Nota: F';
+            }
+        });
+
+        // --- Lógica da Seção de Laços ---
+        document.getElementById('for-start').addEventListener('click', async (e) => {
+            const output = document.getElementById('for-output');
+            output.innerHTML = '';
+            e.target.disabled = true;
+            for (let i = 1; i <= 5; i++) {
+                output.innerHTML += `> Número: ${i}\n`;
+                await sleep(500);
+            }
+            output.innerHTML += '> Fim do laço for.';
+            e.target.disabled = false;
+        });
+        
+        document.getElementById('dowhile-start').addEventListener('click', async (e) => {
+            const output = document.getElementById('dowhile-output');
+            output.innerHTML = '';
+            e.target.disabled = true;
+            let count = 0;
+            const options = ['1', '2', 'S'];
+            let choice;
+
+            do {
+                choice = options[count];
+                output.innerHTML += `> Menu exibido. Usuário escolheu: ${choice}\n`;
+                count++;
+                await sleep(800);
+            } while (choice !== 'S');
+
+            output.innerHTML += '> Saindo do menu. Fim do laço do-while.';
+            e.target.disabled = false;
+        });
+
+        // --- Lógica da Seção de Vetores ---
+        const sampleArray = [12, 5, 89, 3, 45, 7, 99];
+        const visualContainer = document.getElementById('array-visual-container');
+        const arrayOutput = document.getElementById('array-output');
+        let arrayChart;
+
+        function initArrayVisuals() {
+            visualContainer.innerHTML = '';
+            sampleArray.forEach((val, index) => {
+                const box = document.createElement('div');
+                box.id = `arr-box-${index}`;
+                box.className = 'array-box w-12 h-12 md:w-16 md:h-16 flex items-center justify-center text-xl font-bold bg-slate-200 border-2 border-slate-400 rounded-md';
+                box.textContent = val;
+                visualContainer.appendChild(box);
+            });
+            renderArrayChart();
+        }
+        
+        function renderArrayChart() {
+            const ctx = document.getElementById('arrayChart').getContext('2d');
+            if (arrayChart) {
+                arrayChart.destroy();
+            }
+            arrayChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sampleArray.map(String),
+                    datasets: [{
+                        label: 'Valores do Vetor',
+                        data: sampleArray,
+                        backgroundColor: Array(sampleArray.length).fill('rgba(30, 64, 175, 0.6)'),
+                        borderColor: Array(sampleArray.length).fill('rgba(30, 64, 175, 1)'),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false }
+                    }
+                }
+            });
+        }
+        
+        function setButtonsDisabled(disabled) {
+            document.getElementById('array-traverse').disabled = disabled;
+            document.getElementById('array-even-odd').disabled = disabled;
+            document.getElementById('array-max').disabled = disabled;
+            document.getElementById('array-min').disabled = disabled;
+        }
+
+        async function highlightBox(index, color, textColor = 'text-slate-800') {
+            const box = document.getElementById(`arr-box-${index}`);
+            if (box) {
+                box.className = `array-box w-12 h-12 md:w-16 md:h-16 flex items-center justify-center text-xl font-bold ${color} ${textColor} rounded-md shadow-lg scale-110`;
+            }
+            if (arrayChart) {
+                arrayChart.data.datasets[0].backgroundColor[index] = color.includes('blue') ? '#1e3a8a' : color.includes('green') ? '#15803d' : color.includes('purple') ? '#7e22ce' : '#f97316';
+                arrayChart.update();
+            }
+        }
+        
+        async function resetBoxStyles() {
+            for (let i = 0; i < sampleArray.length; i++) {
+                const box = document.getElementById(`arr-box-${i}`);
+                 if (box) {
+                    box.className = 'array-box w-12 h-12 md:w-16 md:h-16 flex items-center justify-center text-xl font-bold bg-slate-200 border-2 border-slate-400 rounded-md';
+                }
+            }
+            if (arrayChart) {
+                 arrayChart.data.datasets[0].backgroundColor = Array(sampleArray.length).fill('rgba(30, 64, 175, 0.6)');
+                 arrayChart.update();
+            }
+        }
+
+        document.getElementById('array-traverse').addEventListener('click', async (e) => {
+            setButtonsDisabled(true);
+            await resetBoxStyles();
+            arrayOutput.innerHTML = '> Iniciando percurso do vetor...\n';
+            for (let i = 0; i < sampleArray.length; i++) {
+                await highlightBox(i, 'bg-blue-500', 'text-white');
+                arrayOutput.innerHTML += `> Acessando índice ${i}: valor ${sampleArray[i]}\n`;
+                await sleep(500);
+            }
+            await resetBoxStyles();
+            arrayOutput.innerHTML += '> Percurso finalizado.';
+            setButtonsDisabled(false);
+        });
+
+        document.getElementById('array-even-odd').addEventListener('click', async (e) => {
+            setButtonsDisabled(true);
+            await resetBoxStyles();
+            let pares = 0, impares = 0;
+            arrayOutput.innerHTML = '> Verificando pares e ímpares...\n';
+            for (let i = 0; i < sampleArray.length; i++) {
+                 await highlightBox(i, 'bg-yellow-400');
+                 await sleep(400);
+                if (sampleArray[i] % 2 === 0) {
+                    await highlightBox(i, 'bg-green-500', 'text-white');
+                    arrayOutput.innerHTML += `> ${sampleArray[i]} é PAR.\n`;
+                    pares++;
+                } else {
+                    await highlightBox(i, 'bg-orange-500', 'text-white');
+                    arrayOutput.innerHTML += `> ${sampleArray[i]} é ÍMPAR.\n`;
+                    impares++;
+                }
+                await sleep(400);
+            }
+            arrayOutput.innerHTML += `> Total de Pares: ${pares}. Total de Ímpares: ${impares}.`;
+            setButtonsDisabled(false);
+        });
+
+        document.getElementById('array-max').addEventListener('click', async (e) => {
+            setButtonsDisabled(true);
+            await resetBoxStyles();
+            let maxVal = sampleArray[0];
+            let maxIndex = 0;
+            arrayOutput.innerHTML = `> Procurando maior valor...\n> Maior atual: ${maxVal}\n`;
+            await highlightBox(maxIndex, 'bg-purple-500', 'text-white');
+            await sleep(800);
+
+            for (let i = 1; i < sampleArray.length; i++) {
+                await highlightBox(i, 'bg-yellow-400');
+                arrayOutput.innerHTML += `> Comparando ${maxVal} com ${sampleArray[i]}...\n`;
+                await sleep(800);
+                if (sampleArray[i] > maxVal) {
+                    arrayOutput.innerHTML += `> Novo maior encontrado: ${sampleArray[i]}!\n`;
+                    await resetBoxStyles();
+                    maxVal = sampleArray[i];
+                    maxIndex = i;
+                    await highlightBox(maxIndex, 'bg-purple-500', 'text-white');
+                }
+                else {
+                   await highlightBox(i, 'bg-slate-300');
+                }
+                 await sleep(800);
+            }
+            await highlightBox(maxIndex, 'bg-purple-700', 'text-white');
+            arrayOutput.innerHTML += `> Fim. O maior valor é ${maxVal}.`;
+            setButtonsDisabled(false);
+        });
+        
+        document.getElementById('array-min').addEventListener('click', async (e) => {
+            setButtonsDisabled(true);
+            await resetBoxStyles();
+            let minVal = sampleArray[0];
+            let minIndex = 0;
+            arrayOutput.innerHTML = `> Procurando menor valor...\n> Menor atual: ${minVal}\n`;
+            await highlightBox(minIndex, 'bg-orange-500', 'text-white');
+            await sleep(800);
+
+            for (let i = 1; i < sampleArray.length; i++) {
+                await highlightBox(i, 'bg-yellow-400');
+                arrayOutput.innerHTML += `> Comparando ${minVal} com ${sampleArray[i]}...\n`;
+                await sleep(800);
+                if (sampleArray[i] < minVal) {
+                    arrayOutput.innerHTML += `> Novo menor encontrado: ${sampleArray[i]}!\n`;
+                    await resetBoxStyles();
+                    minVal = sampleArray[i];
+                    minIndex = i;
+                    await highlightBox(minIndex, 'bg-orange-500', 'text-white');
+                } else {
+                     await highlightBox(i, 'bg-slate-300');
+                }
+                await sleep(800);
+            }
+             await highlightBox(minIndex, 'bg-orange-600', 'text-white');
+            arrayOutput.innerHTML += `> Fim. O menor valor é ${minVal}.`;
+            setButtonsDisabled(false);
+        });
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+             slider.dispatchEvent(new Event('input'));
+             initArrayVisuals();
+        });
+
+    </script>
+</body>
+</html>
